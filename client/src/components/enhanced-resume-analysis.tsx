@@ -187,7 +187,7 @@ export default function EnhancedResumeAnalysis() {
                   <p className="text-gray-700 mb-2 font-medium">Current Resume</p>
                   <p className="text-sm font-medium text-blue-600">{resume.fileName}</p>
                   <p className="text-xs text-gray-500">
-                    Last updated: {new Date(resume.uploadedAt).toLocaleDateString()}
+                    Last updated: {resume.uploadedAt ? new Date(resume.uploadedAt).toLocaleDateString() : 'Unknown'}
                   </p>
                 </>
               ) : (
