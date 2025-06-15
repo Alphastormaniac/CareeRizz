@@ -46,7 +46,7 @@ export const createRazorpayOrder = async (orderData: {
 
 // Razorpay configuration
 export const razorpayConfig = {
-  key_id: process.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_1234567890',
+  key_id: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_1234567890',
   theme: {
     color: '#0A66C2',
   },
