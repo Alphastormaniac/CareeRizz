@@ -1,8 +1,8 @@
-# CareerAI India - Full Stack Application
+# CareeRizz
 
 ## Overview
 
-CareerAI India is a comprehensive career development platform built with a modern full-stack architecture. The application provides AI-powered career insights, resume analysis, personalized learning pathways, mentorship connections, portfolio building, interview preparation, and premium subscription features. It's designed to help users advance their careers through data-driven recommendations and professional development tools.
+CareeRizz is a comprehensive career development platform built with a modern full-stack architecture. The application provides AI-powered career insights, resume analysis, personalized learning pathways, mentorship connections, portfolio building, interview preparation, and premium subscription features. It's designed to help users advance their careers through data-driven recommendations and professional development tools.
 
 ## System Architecture
 
