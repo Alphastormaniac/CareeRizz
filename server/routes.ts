@@ -2,11 +2,109 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import { storage } from "./storage";
-import { insertResumeSchema, insertMentorSessionSchema, insertProjectSchema, insertPaymentSchema } from "@shared/schema";
+import { insertResumeSchema, insertMentorSessionSchema, insertProjectSchema, insertPaymentSchema, insertUserSchema } from "@shared/schema";
 
 const upload = multer({ dest: 'uploads/' });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Authentication routes
+  app.post("/api/auth/signup", async (req, res) => {
+    try {
+      const { email, phone, password, firstName, lastName, authProvider = 'email' } = req.body;
+
+      // Check if user already exists
+      const existingUser = email ? await storage.getUserByEmail(email) : null;
+      if (existingUser) {
+        return res.status(400).json({ message: "User already exists with this email" });
+      }
+
+      // Create new user
+      const userData = {
+        username: email ? email.split('@')[0] : phone,
+        password, // In production, hash this password
+        email: email || null,
+        phoneNumber: phone || null,
+        firstName,
+        lastName,
+        authProvider,
+        careerScore: 0,
+        coursesCompleted: 0,
+        badges: 0,
+        mentorSessions: 0,
+        subscriptionPlan: "free",
+        resumeAnalysisCount: 0,
+        freeAnalysisUsed: false
+      };
+
+      const validatedData = insertUserSchema.parse(userData);
+      const user = await storage.createUser(validatedData);
+
+      // In a real app, you'd set up a session here
+      res.json({ 
+        success: true, 
+        user: { 
+          id: user.id, 
+          email: user.email, 
+          firstName: user.firstName, 
+          lastName: user.lastName 
+        } 
+      });
+    } catch (error) {
+      console.error('Signup error:', error);
+      res.status(500).json({ message: "Failed to create account" });
+    }
+  });
+
+  app.post("/api/auth/signin", async (req, res) => {
+    try {
+      const { email, phone, password, authProvider = 'email' } = req.body;
+
+      // Find user by email or phone
+      let user = null;
+      if (email) {
+        user = await storage.getUserByEmail(email);
+      } else if (phone) {
+        // In a real app, you'd have a getUserByPhone method
+        user = await storage.getUserByEmail(phone); // Temporary fallback
+      }
+
+      if (!user) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      // In production, verify hashed password
+      if (user.password !== password) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      // Update last login
+      await storage.updateUser(user.id, { lastLogin: new Date() });
+
+      // In a real app, you'd set up a session here
+      res.json({ 
+        success: true, 
+        user: { 
+          id: user.id, 
+          email: user.email, 
+          firstName: user.firstName, 
+          lastName: user.lastName 
+        } 
+      });
+    } catch (error) {
+      console.error('Signin error:', error);
+      res.status(500).json({ message: "Failed to sign in" });
+    }
+  });
+
+  app.post("/api/auth/signout", async (req, res) => {
+    try {
+      // In a real app, you'd destroy the session here
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to sign out" });
+    }
+  });
+
   // Get current user data
   app.get("/api/user", async (req, res) => {
     try {

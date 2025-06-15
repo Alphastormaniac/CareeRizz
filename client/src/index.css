@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -74,9 +75,33 @@
 
   body {
     @apply font-sans antialiased text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
     min-height: 100vh;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-variant-numeric: oldstyle-nums;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  p, span, div {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+  }
+
+  input, textarea {
+    font-family: 'Inter', sans-serif;
   }
 }
 
@@ -127,6 +152,23 @@
       linear-gradient(90deg, hsl(var(--cyber-cyan) / 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
   }
+
+  /* Enhanced typography */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-display {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .font-body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+  }
 }
 
 @layer utilities {
@@ -160,6 +202,35 @@
   
   .bg-cyber-green {
     background-color: var(--cyber-green);
+  }
+
+  /* Font weight utilities */
+  .font-light {
+    font-weight: 300;
+  }
+
+  .font-normal {
+    font-weight: 400;
+  }
+
+  .font-medium {
+    font-weight: 500;
+  }
+
+  .font-semibold {
+    font-weight: 600;
+  }
+
+  .font-bold {
+    font-weight: 700;
+  }
+
+  .font-extrabold {
+    font-weight: 800;
+  }
+
+  .font-black {
+    font-weight: 900;
   }
 }
 

@@ -8,8 +8,10 @@ import Landing from "@/pages/landing";
 import NotFound from "@/pages/not-found";
 
 function Router() {
-  // For demo purposes, show landing page to all users
-  // In production, this would check authentication status
+  // Check if user is authenticated by looking for a token or session
+  // For demo purposes, we'll check localStorage or redirect based on URL
+  const isAuthenticated = localStorage.getItem('user') || window.location.pathname === '/dashboard';
+  
   return (
     <Switch>
       <Route path="/dashboard" component={Dashboard} />
