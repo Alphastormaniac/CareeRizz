@@ -93,12 +93,21 @@ export class MemStorage implements IStorage {
       firstName: "Rahul",
       lastName: "Sharma",
       profilePicture: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100",
+      phoneNumber: null,
+      googleId: null,
+      linkedinId: null,
+      githubId: null,
+      authProvider: "email",
       careerScore: 78,
       coursesCompleted: 12,
       badges: 8,
       mentorSessions: 5,
-      subscriptionPlan: "basic",
-      createdAt: new Date()
+      subscriptionPlan: "free",
+      subscriptionExpiry: null,
+      resumeAnalysisCount: 0,
+      freeAnalysisUsed: false,
+      createdAt: new Date(),
+      lastLogin: new Date()
     };
     this.users.set(1, defaultUser);
     this.currentUserId = 2;
@@ -224,7 +233,17 @@ export class MemStorage implements IStorage {
     const user: User = {
       ...insertUser,
       id: this.currentUserId++,
-      createdAt: new Date()
+      createdAt: new Date(),
+      lastLogin: new Date(),
+      phoneNumber: insertUser.phoneNumber || null,
+      googleId: insertUser.googleId || null,
+      linkedinId: insertUser.linkedinId || null,
+      githubId: insertUser.githubId || null,
+      authProvider: insertUser.authProvider || "email",
+      subscriptionPlan: insertUser.subscriptionPlan || "free",
+      subscriptionExpiry: insertUser.subscriptionExpiry || null,
+      resumeAnalysisCount: insertUser.resumeAnalysisCount || 0,
+      freeAnalysisUsed: insertUser.freeAnalysisUsed || false
     };
     this.users.set(user.id, user);
     return user;

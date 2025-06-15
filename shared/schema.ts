@@ -4,17 +4,41 @@ import { z } from "zod";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+  username: text("username"),
+  password: text("password"),
   email: text("email").notNull().unique(),
   firstName: text("first_name").notNull(),
   lastName: text("last_name").notNull(),
   profilePicture: text("profile_picture"),
+  phoneNumber: text("phone_number"),
+  googleId: text("google_id"),
+  linkedinId: text("linkedin_id"),
+  githubId: text("github_id"),
+  authProvider: text("auth_provider").notNull().default("email"), // email, google, linkedin, github, phone
   careerScore: integer("career_score").default(0),
   coursesCompleted: integer("courses_completed").default(0),
   badges: integer("badges").default(0),
   mentorSessions: integer("mentor_sessions").default(0),
-  subscriptionPlan: text("subscription_plan").default("basic"),
+  subscriptionPlan: text("subscription_plan").default("free"), // free, premium, premium_plus
+  subscriptionExpiry: timestamp("subscription_expiry"),
+  resumeAnalysisCount: integer("resume_analysis_count").default(0),
+  freeAnalysisUsed: boolean("free_analysis_used").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  lastLogin: timestamp("last_login")
+});
+
+export const subscriptionPlans = pgTable("subscription_plans", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+  interval: text("interval").notNull(), // monthly, annual
+  features: text("features").array(),
+  maxResumeAnalysis: integer("max_resume_analysis").default(-1), // -1 for unlimited
+  maxMentorSessions: integer("max_mentor_sessions").default(-1),
+  hasAdvancedInsights: boolean("has_advanced_insights").default(false),
+  hasProjectSandbox: boolean("has_project_sandbox").default(false),
+  hasPrioritySupport: boolean("has_priority_support").default(false),
+  isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow()
 });
 
@@ -124,6 +148,12 @@ export const payments = pgTable("payments", {
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
+  createdAt: true,
+  lastLogin: true
+});
+
+export const insertSubscriptionPlanSchema = createInsertSchema(subscriptionPlans).omit({
+  id: true,
   createdAt: true
 });
 
@@ -174,6 +204,9 @@ export const insertPaymentSchema = createInsertSchema(payments).omit({
 // Type exports
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+export type InsertSubscriptionPlan = z.infer<typeof insertSubscriptionPlanSchema>;
+export type SubscriptionPlan = typeof subscriptionPlans.$inferSelect;
 
 export type InsertResume = z.infer<typeof insertResumeSchema>;
 export type Resume = typeof resumes.$inferSelect;
