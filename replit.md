@@ -80,7 +80,7 @@ The application uses a comprehensive PostgreSQL schema with the following core e
 ## Deployment Strategy
 
 ### Development Environment
-- **Runtime**: Node.js 20 with Replit environment
+- **Runtime**: Node.js 20 
 - **Database**: PostgreSQL 16 module
 - **Development Server**: Vite dev server with Express API proxy
 - **Hot Reload**: Vite HMR for frontend, tsx for backend development
@@ -88,7 +88,6 @@ The application uses a comprehensive PostgreSQL schema with the following core e
 ### Production Build
 - **Frontend**: Vite build output to `dist/public`
 - **Backend**: ESBuild bundle to `dist/index.js`
-- **Deployment**: Replit autoscale deployment target
 - **Environment**: Production Node.js with built assets
 
 ### Configuration
