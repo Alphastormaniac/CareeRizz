@@ -64,25 +64,33 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black relative overflow-hidden">
+      {/* Animated background grid */}
+      <div className="absolute inset-0 grid-pattern opacity-20"></div>
+      
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-40">
+      <nav className="glass-morphism border-b border-cyan-500/20 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                CareerAI India
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                CareeRizz
               </h1>
             </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" onClick={() => openAuthModal('signin')}>
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <Button 
+                variant="ghost" 
+                onClick={() => openAuthModal('signin')}
+                className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-400/10 border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300"
+              >
                 Sign In
               </Button>
               <Button 
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-black font-semibold cyber-glow transition-all duration-300"
                 onClick={() => openAuthModal('signup')}
               >
-                Get Started Free
+                <span className="hidden sm:inline">Get Started Free</span>
+                <span className="sm:hidden">Start Free</span>
               </Button>
             </div>
           </div>
@@ -90,93 +98,108 @@ export default function Landing() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 lg:py-32">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
+      <section className="relative overflow-hidden py-12 sm:py-20 lg:py-32">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10"></div>
+        
+        {/* Floating particles effect */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+          <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-purple-400 rounded-full animate-ping"></div>
+          <div className="absolute top-1/2 left-3/4 w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse"></div>
+        </div>
+        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge className="bg-blue-100 text-blue-700 border border-blue-300 mb-6">
-                🚀 Trusted by 10,000+ Professionals
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="text-center lg:text-left">
+              <Badge className="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 mb-4 sm:mb-6 cyber-glow inline-flex">
+                <Sparkles className="w-4 h-4 mr-2" />
+                Trusted by 10,000+ Professionals
               </Badge>
               
-              <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                 Accelerate Your
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  {" "}Career Growth
+                <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent block mt-2">
+                  Career Growth
                 </span>
-                <br />with AI Intelligence
+                <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl block mt-2 text-gray-300">
+                  with AI Intelligence
+                </span>
               </h1>
               
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                 Transform your career with AI-powered insights, personalized learning paths, 
                 and expert mentorship designed specifically for the Indian job market.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8 justify-center lg:justify-start">
                 <Button 
                   size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white h-14 px-8 text-lg font-semibold"
+                  className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-black h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-semibold cyber-glow transition-all duration-300"
                   onClick={() => openAuthModal('signup')}
                 >
-                  Start Free Analysis
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <span className="flex items-center">
+                    Start Free Analysis
+                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  </span>
                 </Button>
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="h-14 px-8 text-lg border-2 hover:bg-gray-50"
+                  className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg border-2 border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/50 transition-all duration-300"
                   onClick={() => openAuthModal('signin')}
                 >
                   Sign In
                 </Button>
               </div>
               
-              <div className="flex items-center space-x-6 text-sm text-gray-600">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-3 sm:space-y-0 sm:space-x-6 text-xs sm:text-sm text-gray-400">
                 <div className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-cyan-400 mr-2" />
                   Free forever plan
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-cyan-400 mr-2" />
                   No credit card required
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-cyan-400 mr-2" />
                   Instant AI analysis
                 </div>
               </div>
             </div>
             
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-600 rounded-3xl transform rotate-6 opacity-20"></div>
-              <div className="relative bg-white rounded-3xl p-8 shadow-2xl border border-gray-100">
-                <div className="space-y-6">
+            <div className="relative mt-8 lg:mt-0">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-purple-600/20 rounded-2xl transform rotate-3 blur-xl"></div>
+              <div className="relative glass-morphism rounded-2xl p-4 sm:p-6 lg:p-8 neon-border">
+                <div className="space-y-4 sm:space-y-6">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-gray-800">AI Career Analysis</h3>
-                    <Badge className="bg-green-100 text-green-700">Live Demo</Badge>
+                    <h3 className="text-base sm:text-lg font-semibold text-cyan-400">AI Career Analysis</h3>
+                    <Badge className="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs sm:text-sm">
+                      Live Demo
+                    </Badge>
                   </div>
                   
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">ATS Score</span>
-                      <span className="font-bold text-green-600">94%</span>
+                      <span className="text-gray-300 text-sm sm:text-base">ATS Score</span>
+                      <span className="font-bold text-cyan-400 text-sm sm:text-base">94%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-green-500 h-2 rounded-full" style={{ width: '94%' }}></div>
+                    <div className="w-full bg-gray-700 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-cyan-400 to-cyan-500 h-2 rounded-full shadow-lg shadow-cyan-400/50" style={{ width: '94%' }}></div>
                     </div>
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Career Score</span>
-                      <span className="font-bold text-blue-600">87/100</span>
+                      <span className="text-gray-300 text-sm sm:text-base">Career Score</span>
+                      <span className="font-bold text-purple-400 text-sm sm:text-base">87/100</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: '87%' }}></div>
+                    <div className="w-full bg-gray-700 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-purple-400 to-purple-500 h-2 rounded-full shadow-lg shadow-purple-400/50" style={{ width: '87%' }}></div>
                     </div>
                   </div>
                   
-                  <div className="pt-4 border-t border-gray-200">
-                    <p className="text-sm text-gray-600">
-                      <strong>Top Recommendation:</strong> Add AWS certification to increase salary potential by ₹3-5L
+                  <div className="pt-3 sm:pt-4 border-t border-gray-600">
+                    <p className="text-xs sm:text-sm text-gray-300">
+                      <strong className="text-cyan-400">Top Recommendation:</strong> Add AWS certification to increase salary potential by ₹3-5L
                     </p>
                   </div>
                 </div>
@@ -187,13 +210,14 @@ export default function Landing() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <section className="py-12 sm:py-16 bg-gradient-to-r from-cyan-600/90 via-purple-600/90 to-pink-600/90 relative overflow-hidden">
+        <div className="absolute inset-0 grid-pattern opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center text-white">
-                <div className="text-3xl lg:text-4xl font-bold mb-2">{stat.number}</div>
-                <div className="text-blue-100">{stat.label}</div>
+              <div key={index} className="text-center text-white glass-morphism rounded-xl p-4 sm:p-6 neon-border">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 cyber-text">{stat.number}</div>
+                <div className="text-xs sm:text-sm text-gray-200">{stat.label}</div>
               </div>
             ))}
           </div>

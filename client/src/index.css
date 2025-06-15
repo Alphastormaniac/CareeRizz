@@ -3,33 +3,38 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(20, 14.3%, 4.1%);
-  --muted: hsl(60, 4.8%, 95.9%);
-  --muted-foreground: hsl(25, 5.3%, 44.7%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(20, 14.3%, 4.1%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(20, 14.3%, 4.1%);
-  --border: hsl(20, 5.9%, 90%);
-  --input: hsl(20, 5.9%, 90%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(60, 4.8%, 95.9%);
-  --secondary-foreground: hsl(24, 9.8%, 10%);
-  --accent: hsl(60, 4.8%, 95.9%);
-  --accent-foreground: hsl(24, 9.8%, 10%);
+  /* Futuristic Cyber Theme */
+  --background: hsl(220, 20%, 6%);
+  --foreground: hsl(180, 100%, 95%);
+  --muted: hsl(220, 15%, 15%);
+  --muted-foreground: hsl(180, 20%, 70%);
+  --popover: hsl(220, 25%, 8%);
+  --popover-foreground: hsl(180, 100%, 95%);
+  --card: hsl(220, 25%, 8%);
+  --card-foreground: hsl(180, 100%, 95%);
+  --border: hsl(220, 20%, 20%);
+  --input: hsl(220, 20%, 15%);
+  --primary: hsl(189, 100%, 50%);
+  --primary-foreground: hsl(220, 20%, 6%);
+  --secondary: hsl(280, 100%, 60%);
+  --secondary-foreground: hsl(220, 20%, 6%);
+  --accent: hsl(320, 100%, 60%);
+  --accent-foreground: hsl(220, 20%, 6%);
   --destructive: hsl(0, 84.2%, 60.2%);
   --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(20, 14.3%, 4.1%);
-  --radius: 0.5rem;
+  --ring: hsl(189, 100%, 50%);
+  --radius: 0.75rem;
 
-  /* Custom colors for CareerAI India */
-  --linkedin-blue: hsl(207, 90%, 54%);
-  --success-green: hsl(134, 61%, 41%);
-  --achievement-gold: hsl(45, 100%, 51%);
-  --bg-light: hsl(210, 20%, 98%);
-  --text-dark: hsl(210, 11%, 15%);
+  /* Custom Futuristic Colors */
+  --cyber-cyan: hsl(189, 100%, 50%);
+  --cyber-purple: hsl(280, 100%, 60%);
+  --cyber-pink: hsl(320, 100%, 60%);
+  --cyber-green: hsl(140, 100%, 50%);
+  --cyber-yellow: hsl(60, 100%, 50%);
+  --dark-bg: hsl(220, 20%, 6%);
+  --darker-bg: hsl(220, 25%, 3%);
+  --light-bg: hsl(220, 20%, 12%);
+  --glass-bg: hsla(220, 25%, 8%, 0.8);
 }
 
 .dark {
@@ -68,41 +73,138 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    @apply font-sans antialiased text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* Futuristic glow effects */
+  .cyber-glow {
+    box-shadow: 0 0 20px hsl(var(--cyber-cyan) / 0.3);
+    border: 1px solid hsl(var(--cyber-cyan) / 0.5);
+  }
+  
+  .cyber-glow:hover {
+    box-shadow: 0 0 30px hsl(var(--cyber-cyan) / 0.5);
+    border: 1px solid hsl(var(--cyber-cyan) / 0.8);
+    transition: all 0.3s ease;
+  }
+  
+  .cyber-text {
+    background: linear-gradient(135deg, var(--cyber-cyan), var(--cyber-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .neon-border {
+    border: 1px solid hsl(var(--cyber-cyan) / 0.3);
+    box-shadow: 
+      0 0 10px hsl(var(--cyber-cyan) / 0.1),
+      inset 0 0 10px hsl(var(--cyber-cyan) / 0.05);
+  }
+  
+  .neon-border:hover {
+    border: 1px solid hsl(var(--cyber-cyan) / 0.6);
+    box-shadow: 
+      0 0 20px hsl(var(--cyber-cyan) / 0.3),
+      inset 0 0 20px hsl(var(--cyber-cyan) / 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .glass-morphism {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .grid-pattern {
+    background-image: 
+      linear-gradient(hsl(var(--cyber-cyan) / 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--cyber-cyan) / 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
 }
 
 @layer utilities {
-  .linkedin-blue {
-    color: var(--linkedin-blue);
+  .cyber-cyan {
+    color: var(--cyber-cyan);
   }
   
-  .bg-linkedin-blue {
-    background-color: var(--linkedin-blue);
+  .bg-cyber-cyan {
+    background-color: var(--cyber-cyan);
   }
   
-  .success-green {
-    color: var(--success-green);
+  .cyber-purple {
+    color: var(--cyber-purple);
   }
   
-  .bg-success-green {
-    background-color: var(--success-green);
+  .bg-cyber-purple {
+    background-color: var(--cyber-purple);
   }
   
-  .achievement-gold {
-    color: var(--achievement-gold);
+  .cyber-pink {
+    color: var(--cyber-pink);
   }
   
-  .bg-achievement-gold {
-    background-color: var(--achievement-gold);
+  .bg-cyber-pink {
+    background-color: var(--cyber-pink);
   }
   
-  .text-dark {
-    color: var(--text-dark);
+  .cyber-green {
+    color: var(--cyber-green);
   }
   
-  .bg-light {
-    background-color: var(--bg-light);
+  .bg-cyber-green {
+    background-color: var(--cyber-green);
   }
+}
+
+/* Responsive Design */
+@screen sm {
+  .container {
+    @apply px-6;
+  }
+}
+
+@screen md {
+  .container {
+    @apply px-8;
+  }
+}
+
+@screen lg {
+  .container {
+    @apply px-12;
+  }
+}
+
+@screen xl {
+  .container {
+    @apply px-16;
+  }
+}
+
+/* Mobile-first responsive utilities */
+.text-responsive {
+  @apply text-sm sm:text-base md:text-lg lg:text-xl;
+}
+
+.heading-responsive {
+  @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
+}
+
+.subheading-responsive {
+  @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+}
+
+.padding-responsive {
+  @apply p-4 sm:p-6 md:p-8 lg:p-12;
+}
+
+.margin-responsive {
+  @apply m-4 sm:m-6 md:m-8 lg:m-12;
 }
