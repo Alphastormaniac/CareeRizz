@@ -101,6 +101,13 @@ The application uses a comprehensive PostgreSQL schema with the following core e
 ```
 Changelog:
 - June 15, 2025. Initial setup
+- June 15, 2025. Enhanced freemium platform with modern authentication
+  * Added multi-platform authentication (Google, LinkedIn, GitHub, Phone)
+  * Implemented three-tier subscription model (Free, Premium Pro ₹299-₹2390, Premium+ Elite ₹799-₹6392)
+  * Created enhanced resume analysis with freemium limitations
+  * Built modern landing page with futuristic UI elements
+  * Integrated enhanced payment section with Razorpay
+  * Added comprehensive auth modal with social login options
 ```
 
 ## User Preferences
