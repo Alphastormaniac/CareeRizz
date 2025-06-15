@@ -36,7 +36,7 @@ export default function PaymentSection() {
       });
 
       const options = {
-        key: process.env.VITE_RAZORPAY_KEY_ID || "rzp_test_1234567890",
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_1234567890",
         amount: order.amount,
         currency: order.currency,
         name: "CareerAI India",
