@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import NavigationHeader from "@/components/navigation-header";
 import StatsOverview from "@/components/stats-overview";
-import ResumeAnalysis from "@/components/resume-analysis";
+import EnhancedResumeAnalysis from "@/components/enhanced-resume-analysis";
 import LearningPathway from "@/components/learning-pathway";
 import PortfolioBuilder from "@/components/portfolio-builder";
 import MentorshipSection from "@/components/mentorship-section";
 import InterviewPrep from "@/components/interview-prep";
-import PaymentSection from "@/components/payment-section";
+import EnhancedPaymentSection from "@/components/enhanced-payment-section";
 import type { User } from "@shared/schema";
 
 export default function Dashboard() {
@@ -53,7 +53,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-8">
-            <ResumeAnalysis />
+            <EnhancedResumeAnalysis />
             <LearningPathway />
             <PortfolioBuilder />
           </div>
@@ -62,8 +62,12 @@ export default function Dashboard() {
           <div className="space-y-8">
             <MentorshipSection />
             <InterviewPrep />
-            <PaymentSection />
           </div>
+        </div>
+
+        {/* Enhanced Payment Section - Full Width */}
+        <div className="mt-12">
+          <EnhancedPaymentSection />
         </div>
       </main>
 
