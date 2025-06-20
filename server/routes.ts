@@ -2,29 +2,35 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import { storage } from "./storage";
+import { setupAuth } from "./auth";
 import { insertResumeSchema, insertMentorSessionSchema, insertProjectSchema, insertPaymentSchema } from "@shared/schema";
 
 const upload = multer({ dest: 'uploads/' });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup authentication
+  setupAuth(app);
+
+  // Middleware to check authentication for protected routes
+  const requireAuth = (req: any, res: any, next: any) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+    next();
+  };
   // Get current user data
-  app.get("/api/user", async (req, res) => {
+  app.get("/api/user", requireAuth, async (req: any, res) => {
     try {
-      // For demo purposes, always return user ID 1
-      const user = await storage.getUser(1);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-      res.json(user);
+      res.json(req.user);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch user data" });
     }
   });
 
   // Get user's resume
-  app.get("/api/resume", async (req, res) => {
+  app.get("/api/resume", requireAuth, async (req: any, res) => {
     try {
-      const resume = await storage.getResumeByUserId(1);
+      const resume = await storage.getResumeByUserId(req.user.id);
       res.json(resume);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch resume" });
@@ -32,7 +38,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Upload resume
-  app.post("/api/resume/upload", upload.single('resume'), async (req, res) => {
+  app.post("/api/resume/upload", requireAuth, upload.single('resume'), async (req: any, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
@@ -44,7 +50,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const keywordScore = Math.floor(Math.random() * 20) + 70; // 70-90
 
       const resumeData = {
-        userId: 1,
+        userId: req.user.id,
         fileName: req.file.originalname,
         filePath: req.file.path,
         extractedSkills,

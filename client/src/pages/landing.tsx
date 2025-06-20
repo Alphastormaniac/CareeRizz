@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Brain, Target, Rocket, Star, CheckCircle, ArrowRight, Sparkles, Zap, Shield, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAuth } from "@/hooks/use-auth";
 import AuthModal from "@/components/auth-modal";
 
 export default function Landing() {
+  const { user } = useAuth();
+  const [, navigate] = useLocation();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signup');
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
 
   const openAuthModal = (mode: 'signin' | 'signup') => {
     setAuthMode(mode);
@@ -62,6 +73,10 @@ export default function Landing() {
       avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"
     }
   ];
+
+  if (user) {
+    return null; // Avoid flashing the landing page
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black relative overflow-hidden">

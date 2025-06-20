@@ -6,6 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/use-auth";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { insertUserSchema } from "@shared/schema";
+import { z } from "zod";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -14,23 +19,61 @@ interface AuthModalProps {
   onModeChange: (mode: 'signin' | 'signup') => void;
 }
 
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+const registerSchema = insertUserSchema.extend({
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
 export default function AuthModal({ isOpen, onClose, mode, onModeChange }: AuthModalProps) {
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [password, setPassword] = useState("");
+  const { loginMutation, registerMutation } = useAuth();
   const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email');
 
+  const form = useForm({
+    resolver: zodResolver(mode === 'signin' ? loginSchema : registerSchema),
+    defaultValues: {
+      email: "",
+      username: "",
+      fullName: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
   const handleSocialAuth = (provider: string) => {
-    // Mock implementation - would integrate with actual OAuth providers
-    console.log(`Authenticating with ${provider}`);
+    // Redirect to OAuth endpoints
+    if (provider === 'google') {
+      window.location.href = '/api/auth/google';
+    } else if (provider === 'github') {
+      window.location.href = '/api/auth/github';
+    } else if (provider === 'linkedin') {
+      window.location.href = '/api/auth/linkedin';
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Mock implementation
-    console.log("Form submitted", { email, phone, firstName, lastName, password, authMethod });
+  const handleSubmit = (data: any) => {
+    if (mode === 'signin') {
+      loginMutation.mutate({
+        email: data.email,
+        password: data.password,
+      });
+    } else {
+      registerMutation.mutate({
+        email: data.email,
+        username: data.username,
+        fullName: data.fullName,
+        password: data.password,
+        subscriptionPlan: 'free',
+        careerScore: 0,
+      });
+    }
   };
 
   const benefits = [
@@ -41,7 +84,7 @@ export default function AuthModal({ isOpen, onClose, mode, onModeChange }: AuthM
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl p-0 overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background border">
         <div className="flex">
           {/* Left Panel - Benefits */}
           <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 p-8 flex-col justify-center relative overflow-hidden">
@@ -149,95 +192,104 @@ export default function AuthModal({ isOpen, onClose, mode, onModeChange }: AuthM
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
               {mode === 'signup' && (
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="firstName">First Name</Label>
+                    <Label htmlFor="fullName">Full Name</Label>
                     <Input
-                      id="firstName"
+                      id="fullName"
                       type="text"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
+                      {...form.register("fullName")}
                       className="mt-1 h-12"
-                      required
+                      placeholder="Enter your full name"
                     />
+                    {form.formState.errors.fullName && (
+                      <p className="text-sm text-destructive mt-1">{form.formState.errors.fullName.message}</p>
+                    )}
                   </div>
                   <div>
-                    <Label htmlFor="lastName">Last Name</Label>
+                    <Label htmlFor="username">Username</Label>
                     <Input
-                      id="lastName"
+                      id="username"
                       type="text"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
+                      {...form.register("username")}
                       className="mt-1 h-12"
-                      required
+                      placeholder="Choose a username"
                     />
+                    {form.formState.errors.username && (
+                      <p className="text-sm text-destructive mt-1">{form.formState.errors.username.message}</p>
+                    )}
                   </div>
                 </div>
               )}
 
-              {authMethod === 'email' ? (
-                <div>
-                  <Label htmlFor="email">Email Address</Label>
-                  <div className="relative mt-1">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <Input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="pl-10 h-12"
-                      placeholder="Enter your email"
-                      required
-                    />
-                  </div>
+              <div>
+                <Label htmlFor="email">Email Address</Label>
+                <div className="relative mt-1">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    {...form.register("email")}
+                    className="pl-10 h-12"
+                    placeholder="Enter your email"
+                  />
                 </div>
-              ) : (
-                <div>
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <div className="relative mt-1">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="pl-10 h-12"
-                      placeholder="+91 98765 43210"
-                      required
-                    />
-                  </div>
-                </div>
-              )}
+                {form.formState.errors.email && (
+                  <p className="text-sm text-destructive mt-1">{form.formState.errors.email.message}</p>
+                )}
+              </div>
 
               <div>
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...form.register("password")}
                   className="mt-1 h-12"
                   placeholder="Enter your password"
-                  required
                 />
+                {form.formState.errors.password && (
+                  <p className="text-sm text-destructive mt-1">{form.formState.errors.password.message}</p>
+                )}
               </div>
+
+              {mode === 'signup' && (
+                <div>
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    {...form.register("confirmPassword")}
+                    className="mt-1 h-12"
+                    placeholder="Confirm your password"
+                  />
+                  {form.formState.errors.confirmPassword && (
+                    <p className="text-sm text-destructive mt-1">{form.formState.errors.confirmPassword.message}</p>
+                  )}
+                </div>
+              )}
 
               <Button 
                 type="submit" 
+                disabled={loginMutation.isPending || registerMutation.isPending}
                 className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold transition-all duration-200"
               >
-                {mode === 'signin' ? 'Sign In' : 'Create Account'}
+                {loginMutation.isPending || registerMutation.isPending ? (
+                  "Loading..."
+                ) : (
+                  mode === 'signin' ? 'Sign In' : 'Create Account'
+                )}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 {mode === 'signin' ? "Don't have an account? " : "Already have an account? "}
                 <button
                   onClick={() => onModeChange(mode === 'signin' ? 'signup' : 'signin')}
-                  className="text-blue-600 hover:text-blue-700 font-medium"
+                  className="text-primary hover:text-primary/80 font-medium"
                 >
                   {mode === 'signin' ? 'Sign up' : 'Sign in'}
                 </button>
@@ -245,7 +297,7 @@ export default function AuthModal({ isOpen, onClose, mode, onModeChange }: AuthM
             </div>
 
             {mode === 'signup' && (
-              <p className="mt-4 text-xs text-gray-500 text-center">
+              <p className="mt-4 text-xs text-muted-foreground text-center">
                 By creating an account, you agree to our Terms of Service and Privacy Policy
               </p>
             )}
