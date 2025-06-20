@@ -3,29 +3,29 @@
 @tailwind utilities;
 
 :root {
-  /* Futuristic Cyber Theme */
-  --background: hsl(220, 20%, 6%);
-  --foreground: hsl(180, 100%, 95%);
-  --muted: hsl(220, 15%, 15%);
-  --muted-foreground: hsl(180, 20%, 70%);
-  --popover: hsl(220, 25%, 8%);
-  --popover-foreground: hsl(180, 100%, 95%);
-  --card: hsl(220, 25%, 8%);
-  --card-foreground: hsl(180, 100%, 95%);
-  --border: hsl(220, 20%, 20%);
-  --input: hsl(220, 20%, 15%);
-  --primary: hsl(189, 100%, 50%);
-  --primary-foreground: hsl(220, 20%, 6%);
-  --secondary: hsl(280, 100%, 60%);
-  --secondary-foreground: hsl(220, 20%, 6%);
-  --accent: hsl(320, 100%, 60%);
-  --accent-foreground: hsl(220, 20%, 6%);
+  /* Light Theme - Better Readability */
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(222.2, 84%, 4.9%);
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(215.4, 16.3%, 46.9%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222.2, 84%, 4.9%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(222.2, 84%, 4.9%);
+  --border: hsl(214.3, 31.8%, 91.4%);
+  --input: hsl(214.3, 31.8%, 91.4%);
+  --primary: hsl(221.2, 83.2%, 53.3%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(210, 40%, 96%);
+  --secondary-foreground: hsl(222.2, 84%, 4.9%);
+  --accent: hsl(210, 40%, 96%);
+  --accent-foreground: hsl(222.2, 84%, 4.9%);
   --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(189, 100%, 50%);
-  --radius: 0.75rem;
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(221.2, 83.2%, 53.3%);
+  --radius: 0.5rem;
 
-  /* Custom Futuristic Colors */
+  /* Custom Brand Colors */
   --cyber-cyan: hsl(189, 100%, 50%);
   --cyber-purple: hsl(280, 100%, 60%);
   --cyber-pink: hsl(320, 100%, 60%);
@@ -38,33 +38,33 @@
 }
 
 .dark {
-  --background: hsl(240, 10%, 3.9%);
-  --foreground: hsl(0, 0%, 98%);
-  --muted: hsl(240, 3.7%, 15.9%);
-  --muted-foreground: hsl(240, 5%, 64.9%);
-  --popover: hsl(240, 10%, 3.9%);
-  --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(240, 10%, 3.9%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --border: hsl(240, 3.7%, 15.9%);
-  --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(240, 3.7%, 15.9%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --accent: hsl(240, 3.7%, 15.9%);
-  --accent-foreground: hsl(0, 0%, 98%);
+  --background: hsl(222.2, 84%, 4.9%);
+  --foreground: hsl(210, 40%, 98%);
+  --muted: hsl(217.2, 32.6%, 17.5%);
+  --muted-foreground: hsl(215, 20.2%, 65.1%);
+  --popover: hsl(222.2, 84%, 4.9%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --card: hsl(222.2, 84%, 4.9%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --border: hsl(217.2, 32.6%, 17.5%);
+  --input: hsl(217.2, 32.6%, 17.5%);
+  --primary: hsl(217.2, 91.2%, 59.8%);
+  --primary-foreground: hsl(222.2, 84%, 4.9%);
+  --secondary: hsl(217.2, 32.6%, 17.5%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --accent: hsl(217.2, 32.6%, 17.5%);
+  --accent-foreground: hsl(210, 40%, 98%);
   --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(240, 4.9%, 83.9%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(217.2, 91.2%, 59.8%);
   --radius: 0.5rem;
 
   /* Dark mode custom colors */
   --linkedin-blue: hsl(207, 90%, 54%);
   --success-green: hsl(134, 61%, 41%);
   --achievement-gold: hsl(45, 100%, 51%);
-  --bg-light: hsl(240, 10%, 3.9%);
-  --text-dark: hsl(0, 0%, 98%);
+  --bg-light: hsl(222.2, 84%, 4.9%);
+  --text-dark: hsl(210, 40%, 98%);
 }
 
 @layer base {
@@ -73,9 +73,8 @@
   }
 
   body {
-    @apply font-sans antialiased text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', system-ui, sans-serif;
-    background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
     min-height: 100vh;
   }
 }
