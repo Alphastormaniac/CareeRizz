@@ -108,6 +108,14 @@ Changelog:
   * Built modern landing page with futuristic UI elements
   * Integrated enhanced payment section with Razorpay
   * Added comprehensive auth modal with social login options
+- June 21, 2025. Fixed authentication system and improved readability
+  * Implemented proper session-based authentication with Passport.js
+  * Set up Google OAuth integration with backend routes
+  * Fixed font colors and readability across the entire application
+  * Added proper authentication state management with React Query
+  * Created protected routes and user session handling
+  * Updated UI theme to use proper light/dark mode color variables
+  * Integrated logout functionality with user dropdown menu
 ```
 
 ## User Preferences

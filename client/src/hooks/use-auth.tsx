@@ -47,6 +47,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Welcome back!",
         description: "You have been successfully logged in.",
       });
+      // Redirect to dashboard
+      window.location.href = "/dashboard";
     },
     onError: (error: Error) => {
       toast({
@@ -68,6 +70,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Account created!",
         description: "Welcome to CareerAI India. Your journey begins now.",
       });
+      // Redirect to dashboard
+      window.location.href = "/dashboard";
     },
     onError: (error: Error) => {
       toast({
@@ -88,6 +92,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Logged out",
         description: "You have been successfully logged out.",
       });
+      // Redirect to landing page
+      window.location.href = "/";
     },
     onError: (error: Error) => {
       toast({

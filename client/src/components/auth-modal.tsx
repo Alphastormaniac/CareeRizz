@@ -51,10 +51,6 @@ export default function AuthModal({ isOpen, onClose, mode, onModeChange }: AuthM
     // Redirect to OAuth endpoints
     if (provider === 'google') {
       window.location.href = '/api/auth/google';
-    } else if (provider === 'github') {
-      window.location.href = '/api/auth/github';
-    } else if (provider === 'linkedin') {
-      window.location.href = '/api/auth/linkedin';
     }
   };
 
@@ -213,22 +209,37 @@ export default function AuthModal({ isOpen, onClose, mode, onModeChange }: AuthM
                 </div>
               )}
 
-              <div>
-                <Label htmlFor="email">Email Address</Label>
-                <div className="relative mt-1">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    type="email"
-                    {...form.register("email")}
-                    className="pl-10 h-12"
-                    placeholder="Enter your email"
-                  />
+              {authMethod === 'email' ? (
+                <div>
+                  <Label htmlFor="email">Email Address</Label>
+                  <div className="relative mt-1">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input
+                      id="email"
+                      type="email"
+                      {...form.register("email")}
+                      className="pl-10 h-12"
+                      placeholder="Enter your email"
+                    />
+                  </div>
+                  {form.formState.errors.email && (
+                    <p className="text-sm text-destructive mt-1">{form.formState.errors.email.message}</p>
+                  )}
                 </div>
-                {form.formState.errors.email && (
-                  <p className="text-sm text-destructive mt-1">{form.formState.errors.email.message}</p>
-                )}
-              </div>
+              ) : (
+                <div>
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <div className="relative mt-1">
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input
+                      id="phone"
+                      type="tel"
+                      className="pl-10 h-12"
+                      placeholder="+91 98765 43210"
+                    />
+                  </div>
+                </div>
+              )}
 
               <div>
                 <Label htmlFor="password">Password</Label>
