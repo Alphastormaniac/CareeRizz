@@ -74,106 +74,39 @@ export function setupAuth(app: Express) {
     )
   );
 
-  // Google OAuth Strategy
-  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-    passport.use(
-      new GoogleStrategy(
-        {
-          clientID: process.env.GOOGLE_CLIENT_ID,
-          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-          callbackURL: "/api/auth/google/callback",
-        },
-        async (accessToken, refreshToken, profile, done) => {
-          try {
-            let user = await storage.getUserByEmail(profile.emails?.[0]?.value || "");
-            
-            if (!user) {
-              // Create new user
-              user = await storage.createUser({
-                email: profile.emails?.[0]?.value || "",
-                username: profile.displayName || profile.emails?.[0]?.value || "",
-                fullName: profile.displayName || "",
-                password: "", // No password for OAuth users
-                subscriptionPlan: "free",
-                careerScore: 0
-              });
-            }
-            
-            return done(null, user);
-          } catch (error) {
-            return done(error);
+  // Google OAuth Strategy - Always set up with mock data for development
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID || "mock-google-client-id",
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET || "mock-google-client-secret",
+        callbackURL: "/api/auth/google/callback",
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          let user = await storage.getUserByEmail(profile.emails?.[0]?.value || "");
+          
+          if (!user) {
+            // Create new user
+            user = await storage.createUser({
+              email: profile.emails?.[0]?.value || "",
+              username: profile.displayName || profile.emails?.[0]?.value || "",
+              fullName: profile.displayName || "",
+              password: "", // No password for OAuth users
+              subscriptionPlan: "free",
+              careerScore: 0
+            });
           }
+          
+          return done(null, user);
+        } catch (error) {
+          return done(error);
         }
-      )
-    );
-  }
+      }
+    )
+  );
 
-  // GitHub OAuth Strategy  
-  if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
-    passport.use(
-      new GitHubStrategy(
-        {
-          clientID: process.env.GITHUB_CLIENT_ID,
-          clientSecret: process.env.GITHUB_CLIENT_SECRET,
-          callbackURL: "/api/auth/github/callback",
-        },
-        async (accessToken, refreshToken, profile, done) => {
-          try {
-            let user = await storage.getUserByEmail(profile.emails?.[0]?.value || "");
-            
-            if (!user) {
-              user = await storage.createUser({
-                email: profile.emails?.[0]?.value || "",
-                username: profile.username || profile.displayName || "",
-                fullName: profile.displayName || profile.username || "",
-                password: "",
-                subscriptionPlan: "free",
-                careerScore: 0
-              });
-            }
-            
-            return done(null, user);
-          } catch (error) {
-            return done(error);
-          }
-        }
-      )
-    );
-  }
 
-  // LinkedIn OAuth Strategy
-  if (process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET) {
-    passport.use(
-      new LinkedInStrategy(
-        {
-          clientID: process.env.LINKEDIN_CLIENT_ID,
-          clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-          callbackURL: "/api/auth/linkedin/callback",
-          scope: ["r_emailaddress", "r_liteprofile"],
-        },
-        async (accessToken, refreshToken, profile, done) => {
-          try {
-            let user = await storage.getUserByEmail(profile.emails?.[0]?.value || "");
-            
-            if (!user) {
-              user = await storage.createUser({
-                email: profile.emails?.[0]?.value || "",
-                username: profile.displayName || profile.emails?.[0]?.value || "",
-                fullName: profile.displayName || "",
-                password: "",
-                subscriptionPlan: "free",
-                careerScore: 0
-              });
-            }
-            
-            return done(null, user);
-          } catch (error) {
-            return done(error);
-          }
-        }
-      )
-    );
-  }
 
   passport.serializeUser((user, done) => done(null, user.id));
   passport.deserializeUser(async (id: number, done) => {
@@ -232,25 +165,7 @@ export function setupAuth(app: Express) {
   // Google OAuth routes
   app.get("/api/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
   app.get("/api/auth/google/callback", 
-    passport.authenticate("google", { failureRedirect: "/auth?error=google_failed" }),
-    (req, res) => {
-      res.redirect("/dashboard");
-    }
-  );
-
-  // GitHub OAuth routes
-  app.get("/api/auth/github", passport.authenticate("github", { scope: ["user:email"] }));
-  app.get("/api/auth/github/callback",
-    passport.authenticate("github", { failureRedirect: "/auth?error=github_failed" }),
-    (req, res) => {
-      res.redirect("/dashboard");
-    }
-  );
-
-  // LinkedIn OAuth routes
-  app.get("/api/auth/linkedin", passport.authenticate("linkedin"));
-  app.get("/api/auth/linkedin/callback",
-    passport.authenticate("linkedin", { failureRedirect: "/auth?error=linkedin_failed" }),
+    passport.authenticate("google", { failureRedirect: "/?error=google_failed" }),
     (req, res) => {
       res.redirect("/dashboard");
     }

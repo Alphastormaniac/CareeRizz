@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/use-auth";
 import NavigationHeader from "@/components/navigation-header";
 import StatsOverview from "@/components/stats-overview";
 import EnhancedResumeAnalysis from "@/components/enhanced-resume-analysis";
@@ -7,19 +7,16 @@ import PortfolioBuilder from "@/components/portfolio-builder";
 import MentorshipSection from "@/components/mentorship-section";
 import InterviewPrep from "@/components/interview-prep";
 import EnhancedPaymentSection from "@/components/enhanced-payment-section";
-import type { User } from "@shared/schema";
 
 export default function Dashboard() {
-  const { data: user, isLoading: userLoading } = useQuery<User>({
-    queryKey: ["/api/user"]
-  });
+  const { user, isLoading } = useAuth();
 
-  if (userLoading) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-light flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-linkedin-blue mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading your dashboard...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading your dashboard...</p>
         </div>
       </div>
     );
@@ -27,7 +24,7 @@ export default function Dashboard() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-light flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600">Failed to load user data</p>
         </div>
@@ -42,10 +39,10 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-dark mb-2">
-            Welcome back, {user.firstName}!
+          <h2 className="text-3xl font-bold text-foreground mb-2">
+            Welcome back, {user.fullName?.split(' ')[0] || user.username}!
           </h2>
-          <p className="text-gray-600">Continue your career journey with personalized AI insights</p>
+          <p className="text-muted-foreground">Continue your career journey with personalized AI insights</p>
         </div>
 
         <StatsOverview user={user} />
