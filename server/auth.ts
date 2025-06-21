@@ -100,7 +100,9 @@ export function setupAuth(app: Express) {
       {
         clientID: googleClientId,
         clientSecret: googleClientSecret,
-        callbackURL: `https://${process.env.REPLIT_DEV_DOMAIN}/api/auth/google/callback`,
+        callbackURL: process.env.NODE_ENV === 'development' 
+          ? "http://localhost:5000/api/auth/google/callback"
+          : `https://${process.env.REPLIT_DEV_DOMAIN}/api/auth/google/callback`,
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
