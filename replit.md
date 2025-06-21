@@ -117,6 +117,11 @@ Changelog:
   * Updated UI theme to use proper light/dark mode color variables
   * Integrated logout functionality with user dropdown menu
   * Rebranded application from "CareerAI India" to "CareeRizz"
+  * Implemented animated onboarding experience for new users
+    - Multi-step welcome flow with profile setup
+    - Interactive dashboard tour with tooltips
+    - Smooth animations using Framer Motion
+    - Persistent onboarding state management
 ```
 
 ## User Preferences

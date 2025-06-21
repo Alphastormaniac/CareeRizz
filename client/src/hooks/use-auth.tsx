@@ -70,6 +70,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Account created!",
         description: "Welcome to CareeRizz. Your journey begins now.",
       });
+      // Clear any existing onboarding state for new users
+      localStorage.removeItem(`onboarding_completed_${user.id}`);
       // Redirect to dashboard
       window.location.href = "/dashboard";
     },

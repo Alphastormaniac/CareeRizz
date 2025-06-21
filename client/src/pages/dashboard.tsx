@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import NavigationHeader from "@/components/navigation-header";
 import StatsOverview from "@/components/stats-overview";
@@ -7,9 +8,37 @@ import PortfolioBuilder from "@/components/portfolio-builder";
 import MentorshipSection from "@/components/mentorship-section";
 import InterviewPrep from "@/components/interview-prep";
 import EnhancedPaymentSection from "@/components/enhanced-payment-section";
+import OnboardingFlow from "@/components/onboarding-flow";
+import OnboardingTooltip from "@/components/onboarding-tooltip";
+import { useOnboardingTour } from "@/hooks/use-onboarding-tour";
 
 export default function Dashboard() {
   const { user, isLoading } = useAuth();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const tour = useOnboardingTour();
+
+  // Check if user is new (created in the last 5 minutes)
+  useEffect(() => {
+    if (user) {
+      // For demo purposes, always show onboarding for new sessions
+      // In production, you'd check user's onboarding status or creation date
+      const hasSeenOnboarding = localStorage.getItem(`onboarding_completed_${user.id}`);
+      if (!hasSeenOnboarding) {
+        setShowOnboarding(true);
+      }
+    }
+  }, [user]);
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+    if (user) {
+      localStorage.setItem(`onboarding_completed_${user.id}`, 'true');
+    }
+    // Start the interactive tour after onboarding
+    setTimeout(() => {
+      tour.startTour();
+    }, 500);
+  };
 
   if (isLoading) {
     return (
@@ -45,19 +74,29 @@ export default function Dashboard() {
           <p className="text-muted-foreground">Continue your career journey with personalized AI insights</p>
         </div>
 
-        <StatsOverview user={user} />
+        <div id="stats-overview">
+          <StatsOverview user={user} />
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-8">
-            <EnhancedResumeAnalysis />
-            <LearningPathway />
-            <PortfolioBuilder />
+            <div id="resume-analysis">
+              <EnhancedResumeAnalysis />
+            </div>
+            <div id="learning-pathway">
+              <LearningPathway />
+            </div>
+            <div id="portfolio-builder">
+              <PortfolioBuilder />
+            </div>
           </div>
 
           {/* Right Column */}
           <div className="space-y-8">
-            <MentorshipSection />
+            <div id="mentorship-section">
+              <MentorshipSection />
+            </div>
             <InterviewPrep />
           </div>
         </div>
@@ -120,6 +159,27 @@ export default function Dashboard() {
           </div>
         </div>
       </footer>
+
+      {/* Onboarding Flow */}
+      <OnboardingFlow
+        isOpen={showOnboarding}
+        onComplete={handleOnboardingComplete}
+      />
+
+      {/* Interactive Tour */}
+      {tour.isActive && tour.currentStepData && (
+        <OnboardingTooltip
+          targetId={tour.currentStepData.targetId}
+          title={tour.currentStepData.title}
+          description={tour.currentStepData.description}
+          position={tour.currentStepData.position}
+          isVisible={tour.isActive}
+          onNext={tour.nextStep}
+          onSkip={tour.endTour}
+          step={tour.currentStep}
+          totalSteps={tour.totalSteps}
+        />
+      )}
     </div>
   );
 }
