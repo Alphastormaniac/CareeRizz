@@ -103,7 +103,7 @@ Changelog:
 - June 15, 2025. Initial setup
 - June 15, 2025. Enhanced freemium platform with modern authentication
   * Added multi-platform authentication (Google, LinkedIn, GitHub, Phone)
-  * Implemented three-tier subscription model (Free, Premium Pro ₹299-₹2390, Premium+ Elite ₹799-₹6392)
+  * Implemented three-tier subscription model (Free, Premium Pro ₹299-₹2390, Premium+ Elite ₹799-₋6392)
   * Created enhanced resume analysis with freemium limitations
   * Built modern landing page with futuristic UI elements
   * Integrated enhanced payment section with Razorpay
@@ -122,6 +122,16 @@ Changelog:
     - Interactive dashboard tour with tooltips
     - Smooth animations using Framer Motion
     - Persistent onboarding state management
+- June 21, 2025. Prepared application for GitHub and Netlify deployment
+  * Fixed Google OAuth "invalid_client" error with proper credentials
+  * Created Netlify configuration and serverless function setup
+  * Added PostgreSQL database integration for production
+  * Updated authentication callback URLs for production deployment
+  * Created comprehensive deployment documentation
+  * Set up build process for Netlify Functions
+  * Added environment variable configuration for cloud deployment
+  * Application ready for free hosting on GitHub + Netlify + Neon Database
+  * Complete migration from Replit to cloud hosting configured
 ```
 
 ## User Preferences

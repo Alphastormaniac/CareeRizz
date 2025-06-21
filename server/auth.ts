@@ -39,16 +39,16 @@ export function setupAuth(app: Express) {
   const sessionSettings: session.SessionOptions = {
     secret: process.env.SESSION_SECRET || "your-secret-key-here",
     resave: false,
-    saveUninitialized: true, // Changed to true for debugging
+    saveUninitialized: false,
     store: new PostgresSessionStore({ 
       pool, 
-      createTableIfMissing: false  // Disable auto-creation to avoid conflicts
+      createTableIfMissing: true
     }),
     cookie: {
-      secure: false, // Set to false for development (localhost)
-      httpOnly: false, // Changed to false for debugging
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      sameSite: "lax"
+      sameSite: process.env.NODE_ENV === 'production' ? "strict" : "lax"
     }
   };
 
@@ -104,7 +104,9 @@ export function setupAuth(app: Express) {
         clientSecret: googleClientSecret,
         callbackURL: process.env.NODE_ENV === 'development' 
           ? "http://localhost:5000/api/auth/google/callback"
-          : `https://${process.env.REPLIT_DEV_DOMAIN}/api/auth/google/callback`,
+          : process.env.NETLIFY_URL 
+            ? `${process.env.NETLIFY_URL}/api/auth/google/callback`
+            : `https://${process.env.REPLIT_DEV_DOMAIN}/api/auth/google/callback`,
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
