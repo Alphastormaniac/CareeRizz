@@ -78,15 +78,18 @@ export function setupAuth(app: Express) {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: "63409722555-o4gvo5jr964q8gmopt3m1qm4ocs7tgl0.apps.googleusercontent.com",
-        clientSecret: "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",
+        clientID: process.env.GOOGLE_CLIENT_ID!,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         callbackURL: "/api/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
+          console.log("Google OAuth callback received:", profile.id, profile.emails?.[0]?.value);
+          
           let user = await storage.getUserByEmail(profile.emails?.[0]?.value || "");
           
           if (!user) {
+            console.log("Creating new user from Google OAuth");
             // Create new user
             user = await storage.createUser({
               email: profile.emails?.[0]?.value || "",
@@ -96,10 +99,13 @@ export function setupAuth(app: Express) {
               subscriptionPlan: "free",
               careerScore: 0
             });
+          } else {
+            console.log("Existing user found, logging in");
           }
           
           return done(null, user);
         } catch (error) {
+          console.error("Google OAuth error:", error);
           return done(error);
         }
       }
@@ -167,6 +173,7 @@ export function setupAuth(app: Express) {
   app.get("/api/auth/google/callback", 
     passport.authenticate("google", { failureRedirect: "/?error=google_failed" }),
     (req, res) => {
+      console.log("Google OAuth success, redirecting to dashboard");
       res.redirect("/dashboard");
     }
   );
