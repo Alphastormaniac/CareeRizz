@@ -321,7 +321,7 @@ export default function EnhancedPaymentSection() {
 
       {/* Value Proposition */}
       <div className="mt-8 p-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-white">
-        <h3 className="text-xl font-bold mb-3 text-center">Why Choose CareerAI India?</h3>
+        <h3 className="text-xl font-bold mb-3 text-center">Why Choose CareeRizz?</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
           <div>
             <Brain className="h-8 w-8 mx-auto mb-2" />

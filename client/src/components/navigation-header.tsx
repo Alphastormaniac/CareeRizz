@@ -18,7 +18,7 @@ export default function NavigationHeader({ user }: NavigationHeaderProps) {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-primary">CareerAI India</h1>
+              <h1 className="text-2xl font-bold text-primary">CareeRizz</h1>
             </div>
             <div className="hidden md:block ml-10">
               <div className="flex items-baseline space-x-4">

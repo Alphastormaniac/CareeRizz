@@ -73,7 +73,7 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-semibold text-dark mb-4">CareerAI India</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-4">CareeRizz</h3>
               <p className="text-gray-600 text-sm">Empowering careers with AI-driven insights and personalized learning paths.</p>
             </div>
             <div>
@@ -116,7 +116,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="border-t border-gray-200 mt-8 pt-8 text-center">
-            <p className="text-gray-600 text-sm">&copy; 2024 CareerAI India. All rights reserved.</p>
+            <p className="text-muted-foreground text-sm">&copy; 2024 CareeRizz. All rights reserved.</p>
           </div>
         </div>
       </footer>

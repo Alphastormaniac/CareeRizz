@@ -89,7 +89,7 @@ export default function Landing() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <h1 className="text-2xl font-bold text-primary">
-                CareerAI India
+                CareeRizz
               </h1>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
@@ -314,7 +314,7 @@ export default function Landing() {
             Ready to Transform Your Career?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join thousands of professionals who have accelerated their careers with CareerAI India
+            Join thousands of professionals who have accelerated their careers with CareeRizz
           </p>
           <Button 
             size="lg"
@@ -335,7 +335,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-semibold mb-4">CareerAI India</h3>
+              <h3 className="text-lg font-semibold mb-4">CareeRizz</h3>
               <p className="text-gray-400 text-sm">
                 Empowering careers with AI-driven insights and personalized learning paths.
               </p>
@@ -369,7 +369,7 @@ export default function Landing() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-            <p className="text-gray-400 text-sm">&copy; 2024 CareerAI India. All rights reserved.</p>
+            <p className="text-gray-400 text-sm">&copy; 2024 CareeRizz. All rights reserved.</p>
           </div>
         </div>
       </footer>
