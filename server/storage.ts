@@ -431,4 +431,156 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Use PostgreSQL storage in production, memory storage in development
+export const storage = process.env.NODE_ENV === 'production' 
+  ? new DrizzleStorage() 
+  : new MemStorage();
+
+// PostgreSQL storage implementation
+class DrizzleStorage implements IStorage {
+  // User operations
+  async getUser(id: number): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.id, id));
+    return result[0];
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.username, username));
+    return result[0];
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.email, email));
+    return result[0];
+  }
+
+  async createUser(user: InsertUser): Promise<User> {
+    const result = await db.insert(users).values(user).returning();
+    return result[0];
+  }
+
+  async updateUser(id: number, updates: Partial<User>): Promise<User | undefined> {
+    const result = await db.update(users).set(updates).where(eq(users.id, id)).returning();
+    return result[0];
+  }
+
+  // Resume operations
+  async getResumeByUserId(userId: number): Promise<Resume | undefined> {
+    const result = await db.select().from(resumes).where(eq(resumes.userId, userId));
+    return result[0];
+  }
+
+  async createResume(resume: InsertResume): Promise<Resume> {
+    const result = await db.insert(resumes).values(resume).returning();
+    return result[0];
+  }
+
+  async updateResume(id: number, updates: Partial<Resume>): Promise<Resume | undefined> {
+    const result = await db.update(resumes).set(updates).where(eq(resumes.id, id)).returning();
+    return result[0];
+  }
+
+  // Course operations
+  async getAllCourses(): Promise<Course[]> {
+    return await db.select().from(courses);
+  }
+
+  async getCourse(id: number): Promise<Course | undefined> {
+    const result = await db.select().from(courses).where(eq(courses.id, id));
+    return result[0];
+  }
+
+  async getRecommendedCourses(skills: string[]): Promise<Course[]> {
+    return await db.select().from(courses).limit(6);
+  }
+
+  async getUserCourses(userId: number): Promise<UserCourse[]> {
+    return await db.select().from(userCourses).where(eq(userCourses.userId, userId));
+  }
+
+  async enrollUserInCourse(enrollment: InsertUserCourse): Promise<UserCourse> {
+    const result = await db.insert(userCourses).values(enrollment).returning();
+    return result[0];
+  }
+
+  async updateCourseProgress(userId: number, courseId: number, progress: number): Promise<UserCourse | undefined> {
+    const result = await db.update(userCourses)
+      .set({ progress })
+      .where(and(eq(userCourses.userId, userId), eq(userCourses.courseId, courseId)))
+      .returning();
+    return result[0];
+  }
+
+  // Mentor operations
+  async getAllMentors(): Promise<Mentor[]> {
+    return await db.select().from(mentors);
+  }
+
+  async getMentor(id: number): Promise<Mentor | undefined> {
+    const result = await db.select().from(mentors).where(eq(mentors.id, id));
+    return result[0];
+  }
+
+  async getTopMentors(): Promise<Mentor[]> {
+    return await db.select().from(mentors).limit(3);
+  }
+
+  async getMentorSessions(userId: number): Promise<MentorSession[]> {
+    return await db.select().from(mentorSessions).where(eq(mentorSessions.userId, userId));
+  }
+
+  async createMentorSession(session: InsertMentorSession): Promise<MentorSession> {
+    const result = await db.insert(mentorSessions).values(session).returning();
+    return result[0];
+  }
+
+  // Project operations
+  async getUserProjects(userId: number): Promise<Project[]> {
+    return await db.select().from(projects).where(eq(projects.userId, userId));
+  }
+
+  async createProject(project: InsertProject): Promise<Project> {
+    const result = await db.insert(projects).values(project).returning();
+    return result[0];
+  }
+
+  async updateProject(id: number, updates: Partial<Project>): Promise<Project | undefined> {
+    const result = await db.update(projects).set(updates).where(eq(projects.id, id)).returning();
+    return result[0];
+  }
+
+  // Skill badge operations
+  async getUserBadges(userId: number): Promise<SkillBadge[]> {
+    return await db.select().from(skillBadges).where(eq(skillBadges.userId, userId));
+  }
+
+  async awardBadge(badge: InsertSkillBadge): Promise<SkillBadge> {
+    const result = await db.insert(skillBadges).values(badge).returning();
+    return result[0];
+  }
+
+  // Interview performance operations
+  async getUserInterviewPerformance(userId: number): Promise<InterviewPerformance[]> {
+    return await db.select().from(interviewPerformance).where(eq(interviewPerformance.userId, userId));
+  }
+
+  async createInterviewPerformance(performance: InsertInterviewPerformance): Promise<InterviewPerformance> {
+    const result = await db.insert(interviewPerformance).values(performance).returning();
+    return result[0];
+  }
+
+  // Payment operations
+  async createPayment(payment: InsertPayment): Promise<Payment> {
+    const result = await db.insert(payments).values(payment).returning();
+    return result[0];
+  }
+
+  async getPayment(id: number): Promise<Payment | undefined> {
+    const result = await db.select().from(payments).where(eq(payments.id, id));
+    return result[0];
+  }
+
+  async getUserPayments(userId: number): Promise<Payment[]> {
+    return await db.select().from(payments).where(eq(payments.userId, userId));
+  }
+}
