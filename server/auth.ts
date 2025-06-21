@@ -39,15 +39,16 @@ export function setupAuth(app: Express) {
   const sessionSettings: session.SessionOptions = {
     secret: process.env.SESSION_SECRET || "your-secret-key-here",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true, // Changed to true for debugging
     store: new PostgresSessionStore({ 
       pool, 
-      createTableIfMissing: true 
+      createTableIfMissing: false  // Disable auto-creation to avoid conflicts
     }),
     cookie: {
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      secure: false, // Set to false for development (localhost)
+      httpOnly: false, // Changed to false for debugging
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      sameSite: "lax"
     }
   };
 
@@ -55,6 +56,14 @@ export function setupAuth(app: Express) {
   app.use(session(sessionSettings));
   app.use(passport.initialize());
   app.use(passport.session());
+
+  // Debug middleware
+  app.use((req, res, next) => {
+    if (req.path.includes('/api/')) {
+      console.log(`${req.method} ${req.path} - Session ID: ${req.sessionID?.substring(0, 8)}..., Authenticated: ${req.isAuthenticated()}`);
+    }
+    next();
+  });
 
   // Local Strategy
   passport.use(
@@ -75,11 +84,22 @@ export function setupAuth(app: Express) {
   );
 
   // Google OAuth Strategy
+  const googleClientId = process.env.GOOGLE_CLIENT_ID;
+  const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  
+  console.log("Google OAuth Config - Client ID:", googleClientId?.substring(0, 10) + "...");
+  console.log("Google OAuth Config - Client Secret exists:", !!googleClientSecret);
+  
+  if (!googleClientId || !googleClientSecret) {
+    console.error("Missing Google OAuth credentials");
+    throw new Error("Google OAuth credentials not configured");
+  }
+  
   passport.use(
     new GoogleStrategy(
       {
-        clientID: process.env.GOOGLE_CLIENT_ID!,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        clientID: googleClientId,
+        clientSecret: googleClientSecret,
         callbackURL: "/api/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
@@ -114,12 +134,23 @@ export function setupAuth(app: Express) {
 
 
 
-  passport.serializeUser((user, done) => done(null, user.id));
+  passport.serializeUser((user, done) => {
+    console.log("Serializing user:", user.id);
+    done(null, user.id);
+  });
+  
   passport.deserializeUser(async (id: number, done) => {
     try {
+      console.log("Deserializing user:", id);
       const user = await storage.getUser(id);
+      if (!user) {
+        console.log("User not found during deserialization:", id);
+        return done(null, false);
+      }
+      console.log("User deserialized successfully:", user.email);
       done(null, user);
     } catch (error) {
+      console.error("Deserialization error:", error);
       done(error);
     }
   });
@@ -164,7 +195,12 @@ export function setupAuth(app: Express) {
   });
 
   app.get("/api/user", (req, res) => {
-    if (!req.isAuthenticated()) return res.sendStatus(401);
+    console.log("User endpoint called. Authenticated:", req.isAuthenticated(), "Session:", !!req.session, "User:", !!req.user);
+    if (!req.isAuthenticated()) {
+      console.log("User not authenticated, returning 401");
+      return res.sendStatus(401);
+    }
+    console.log("Returning authenticated user:", req.user?.email);
     res.json(req.user);
   });
 
@@ -173,7 +209,8 @@ export function setupAuth(app: Express) {
   app.get("/api/auth/google/callback", 
     passport.authenticate("google", { failureRedirect: "/?error=google_failed" }),
     (req, res) => {
-      console.log("Google OAuth success, redirecting to dashboard");
+      console.log("Google OAuth success. User:", req.user?.email, "Session ID:", req.sessionID);
+      console.log("Is authenticated:", req.isAuthenticated());
       res.redirect("/dashboard");
     }
   );
