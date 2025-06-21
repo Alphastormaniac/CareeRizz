@@ -87,8 +87,10 @@ export function setupAuth(app: Express) {
   const googleClientId = process.env.GOOGLE_CLIENT_ID;
   const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
   
-  console.log("Google OAuth Config - Client ID:", googleClientId?.substring(0, 10) + "...");
+  console.log("Google OAuth Config - Client ID:", googleClientId?.substring(0, 20) + "...");
   console.log("Google OAuth Config - Client Secret exists:", !!googleClientSecret);
+  console.log("Google OAuth Config - Client ID length:", googleClientId?.length);
+  console.log("Google OAuth Config - Client Secret length:", googleClientSecret?.length);
   
   if (!googleClientId || !googleClientSecret) {
     console.error("Missing Google OAuth credentials");
@@ -209,11 +211,13 @@ export function setupAuth(app: Express) {
   // Google OAuth routes
   app.get("/api/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
   app.get("/api/auth/google/callback", 
-    passport.authenticate("google", { failureRedirect: "/?error=google_failed" }),
-    (req, res) => {
-      console.log("Google OAuth success. User:", req.user?.email, "Session ID:", req.sessionID);
-      console.log("Is authenticated:", req.isAuthenticated());
-      res.redirect("/dashboard");
-    }
+    (req, res, next) => {
+      console.log("Google OAuth callback hit, query params:", req.query);
+      next();
+    },
+    passport.authenticate("google", { 
+      failureRedirect: "/?error=google_failed",
+      successRedirect: "/dashboard"
+    })
   );
 }
