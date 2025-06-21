@@ -74,12 +74,12 @@ export function setupAuth(app: Express) {
     )
   );
 
-  // Google OAuth Strategy - Always set up with mock data for development
+  // Google OAuth Strategy
   passport.use(
     new GoogleStrategy(
       {
-        clientID: process.env.GOOGLE_CLIENT_ID || "mock-google-client-id",
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET || "mock-google-client-secret",
+        clientID: "63409722555-o4gvo5jr964q8gmopt3m1qm4ocs7tgl0.apps.googleusercontent.com",
+        clientSecret: "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",
         callbackURL: "/api/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {

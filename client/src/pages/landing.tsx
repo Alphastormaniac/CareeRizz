@@ -88,20 +88,20 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                CareeRizz
+              <h1 className="text-2xl font-bold text-primary">
+                CareerAI India
               </h1>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
               <Button 
                 variant="ghost" 
                 onClick={() => openAuthModal('signin')}
-                className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-400/10 border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300"
+                className="text-primary hover:text-primary/80 hover:bg-primary/10 border border-primary/30 hover:border-primary/50 transition-all duration-300"
               >
                 Sign In
               </Button>
               <Button 
-                className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-black font-semibold cyber-glow transition-all duration-300"
+                className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground font-semibold transition-all duration-300"
                 onClick={() => openAuthModal('signup')}
               >
                 <span className="hidden sm:inline">Get Started Free</span>
@@ -149,7 +149,7 @@ export default function Landing() {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8 justify-center lg:justify-start">
                 <Button 
                   size="lg"
-                  className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-black h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-semibold cyber-glow transition-all duration-300"
+                  className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-semibold transition-all duration-300"
                   onClick={() => openAuthModal('signup')}
                 >
                   <span className="flex items-center">
@@ -160,7 +160,7 @@ export default function Landing() {
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg border-2 border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/50 transition-all duration-300"
+                  className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg border-2 border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
                   onClick={() => openAuthModal('signin')}
                 >
                   Sign In
@@ -169,15 +169,15 @@ export default function Landing() {
               
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-3 sm:space-y-0 sm:space-x-6 text-xs sm:text-sm text-gray-400">
                 <div className="flex items-center">
-                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-cyan-400 mr-2" />
+                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-primary mr-2" />
                   Free forever plan
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-cyan-400 mr-2" />
+                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-primary mr-2" />
                   No credit card required
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-cyan-400 mr-2" />
+                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-primary mr-2" />
                   Instant AI analysis
                 </div>
               </div>

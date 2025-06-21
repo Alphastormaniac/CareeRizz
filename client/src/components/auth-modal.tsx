@@ -117,14 +117,14 @@ export default function AuthModal({ isOpen, onClose, mode, onModeChange }: AuthM
           <div className="w-full lg:w-1/2 p-8">
             <DialogHeader className="mb-6">
               <div className="flex items-center justify-between">
-                <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <DialogTitle className="text-2xl font-bold text-foreground">
                   {mode === 'signin' ? 'Welcome Back' : 'Create Account'}
                 </DialogTitle>
-                <Button variant="ghost" size="icon" onClick={onClose} className="text-gray-400 hover:text-gray-600">
+                <Button variant="ghost" size="icon" onClick={onClose} className="text-muted-foreground hover:text-foreground">
                   <X className="h-5 w-5" />
                 </Button>
               </div>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 {mode === 'signin' 
                   ? 'Sign in to continue your career journey' 
                   : 'Start your AI-powered career transformation'
@@ -274,7 +274,7 @@ export default function AuthModal({ isOpen, onClose, mode, onModeChange }: AuthM
               <Button 
                 type="submit" 
                 disabled={loginMutation.isPending || registerMutation.isPending}
-                className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold transition-all duration-200"
+                className="w-full h-12 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground font-semibold transition-all duration-200"
               >
                 {loginMutation.isPending || registerMutation.isPending ? (
                   "Loading..."
