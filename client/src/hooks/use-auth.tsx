@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       queryClient.setQueryData(["/api/user"], user);
       toast({
         title: "Account created!",
-        description: "Welcome to CareerAI India. Your journey begins now.",
+        description: "Welcome to CareeRizz. Your journey begins now.",
       });
       // Redirect to dashboard
       window.location.href = "/dashboard";
